@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ar.ase.mapper.SpeechMessageMapper">
+    <!-- 根据条件查询 -->
+    <select id="getMessageByCondition" resultType="com.ar.ase.entity.SpeechMessage"
+            parameterType="com.ar.ase.entity.SpeechMessage">
+        select id, speaker, verb, content, yn from speech_message
+        <where>
+            yn=1
+            <if test="id != null">
+                <![CDATA[AND id = #{id,jdbcType=INTEGER}]]>
+            </if>
+            <if test="speaker != null and speaker != ''">
+                <![CDATA[AND speaker like concat('%', #{speaker,jdbcType=VARCHAR},'%')]]>
+            </if>
+            <if test="verb != null and verb != ''">
+                <![CDATA[AND verb like concat('%', #{verb,jdbcType=VARCHAR},'%')]]>
+            </if>
+            <if test="content != null and content != ''">
+                <![CDATA[AND content like concat('%', #{content,jdbcType=VARCHAR},'%')]]>
+            </if>
+            <if test="keyword != null and keyword != ''" >
+                <![CDATA[AND CONCAT(speaker, verb, content) like CONCAT('%', #{keyword},'%')]]>
+            </if>
+            order by id
+        </where>
+    </select>
+
+    <select id="insert" parameterType="com.ar.ase.entity.SpeechMessage">
+        INSERT INTO speech_message(speaker, content, verb) values(#{speaker,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{verb,jdbcType=VARCHAR});
+    </select>
+
+</mapper>

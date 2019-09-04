@@ -1,0 +1,177 @@
+#set($layout="layout/contentLayout.vm")
+<div style="text-align: right;
+    padding-top: 20px;
+    padding-right: 10%;">
+    <input type="text" id="key-words" class="input-border-main" name="q" size="30" placeholder="请输入关键词"/>
+    <button class="btn" style="background-color: green;color: aliceblue;margin-bottom: 5px;" type="button" onclick="search()">搜索</button>
+</div>
+<div style="padding: 0 5%;">
+    <input id="nowPage" type="hidden"/>
+    <input id="pageNum" type="hidden"/>
+    <h1 style="text-align: center;font-size: 30px;padding-bottom: 20px;border-bottom: solid 1px #ddd;">舆情监控</h1>
+    <div>
+        <ul style="padding-left: 0px" id="massageList">
+        </ul>
+    </div>
+    <div id="page"></div>
+</div>
+<style type="text/css">
+    .input-border-main {
+        height: 37px;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        border: double;
+        border-color: darkgreen;
+        width: 160px;
+    }
+
+    .clearfix {
+        display: block;
+        border-bottom: solid 1px #ddd;
+        margin-bottom: 10px;
+    }
+
+    .news-date {
+        text-align: center;
+        display: inline-block;
+        float: left;
+        width: 5rem;
+        height: 5rem;
+        background: #f2f2f2;
+    }
+
+    .news-date1 {
+        text-align: center;
+        color: #666666;
+        font-size: 1.5625rem;
+        padding-top: 30%;
+    }
+
+    .news-bodys {
+        display: list-item;
+        padding: 0 0.875rem;
+        overflow: hidden;
+    }
+
+    .username {
+        font-size: 27px;
+        margin-right: 10px;
+        color: blue;
+    }
+
+    .verb {
+        font-size: 18px;
+        color: brown;
+    }
+
+    .centence {
+        text-indent: 2em;
+        text-align: justify;
+        font-size: 16px;
+        color: #999;
+    }
+
+    #page {
+        margin: 20px auto;
+        color: #666;
+        display: block;
+        text-align: center;
+    }
+
+    #page ul {
+        padding-left: 0px;
+    }
+
+    #page li {
+        display: inline-block;
+        min-width: 30px;
+        height: 28px;
+        cursor: pointer;
+        color: #666;
+        font-size: 13px;
+        line-height: 28px;
+        background-color: #f9f9f9;
+        border: 1px solid #dce0e0;
+        text-align: center;
+        margin: 0 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .xl-nextPage,
+    .xl-prevPage {
+        width: 60px;
+        color: #0073A9;
+        height: 28px;
+    }
+
+    #page li.xl-disabled {
+        opacity: .5;
+        cursor: no-drop;
+    }
+
+    #page li.xl-active {
+        background-color: #0073A9;
+        border-color: #0073A9;
+        color: #FFF
+    }
+</style>
+<script src="/static/common/js/page/xlPaging.js"></script>
+<script src="/static/monitor/massage-list.js"></script>
+<script>
+    var param = {};
+    param.page = 1;
+    param.pageSize = 10;
+    showDatas(param)
+
+    function search() {
+        var param = {};
+        var keyWords = $("#key-words").val();
+        if (keyWords != undefined && keyWords != null && keyWords.trim() != '') {
+            param.keyword = keyWords.trim();
+        }
+        param.page = 1;
+        param.pageSize = 10;
+        showDatas(param);
+
+    }
+
+    $("#key-words").keyup(function(event){
+        if(event.keyCode == 13){
+            var param = {};
+            var keyWords = this.value;
+            if (keyWords != undefined && keyWords != null && keyWords.trim() != '') {
+                param.keyword = keyWords.trim();
+            }
+            param.page = 1;
+            param.pageSize = 10;
+            showDatas(param);
+        }
+    });
+
+    function showDatas(param) {
+        getMassageList(param);
+        var nowPage = $("#nowPage").val();
+        var pageNum = $("#pageNum").val();
+        if ((nowPage === undefined) || (nowPage == null) || (nowPage == '')) {
+            nowPage = 1;
+        }
+        if ((pageNum === undefined) || (pageNum == null) || (pageNum == '')) {
+            pageNum = 1;
+        }
+
+        $("#page").paging({
+            nowPage: parseInt(nowPage), // 当前页码,默认为1
+            pageNum: parseInt(pageNum), // 总页码
+            buttonNum: 7, //要展示的页码数量，默认为7，若小于5则为5
+            callback: function (num) { //回调函数,num为当前页码
+                var param = {};
+                param.page = num;
+                param.pageSize = 10;
+                getMassageList(param);
+            }
+        });
+    }
+</script>

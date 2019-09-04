@@ -1,0 +1,132 @@
+#set($layoutPath="layout/empty.vm")
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>学生行为分析管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="/static/common/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/common/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/static/common/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/static/common/css/dataTables.bootstrap.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/static/common/css/select2.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/common/css/AdminLTE.css">
+    <!-- tips -->
+    <link rel="stylesheet" href="/static/common/js/toastr/toastr.min.css">
+
+    <link rel="stylesheet" href="/static/common/css/skins/skin-blue-light.css">
+
+    <link rel="stylesheet" href="/static/common/js/pace/pace.min.css">
+
+    <link rel="stylesheet" href="/static/common/css/bootstrap-datetimepicker.css">
+
+    <link rel="stylesheet" href="/static/common/css/global.css">
+    <!-- jQuery 3 -->
+    <script src="/static/common/js/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="/static/common/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="/static/common/js/jquery.dataTables.min.js"></script>
+    <script src="/static/common/js/dataTables.bootstrap.min.js"></script>
+    <!-- Select2 -->
+#*<script src="/static/common/js/select2.full.min.js"></script>*#
+    <!-- SlimScroll -->
+    <script src="/static/common/js/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="/static/common/js/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/static/common/js/adminlte.min.js"></script>
+    <!-- datepicker -->
+    <script src="/static/common/js/bootstrap-datetimepicker.js"></script>
+    <!-- bootstrapValidator -->
+    <script src="/static/common/js/bootstrapValidator.min.js"></script>
+    <!-- jquery.form -->
+    <script src="/static/common/js/jquery.form.min.js"></script>
+    <!-- 确认框 -->
+    <script src="/static/common/js/bootbox.min.js"></script>
+    <!-- tips -->
+    <script src="/static/common/js/toastr/toastr.min.js"></script>
+    <!-- pace -->
+    <script src="/static/common/js/pace/pace.min.js"></script>
+    <!-- 自定义扩展 -->
+    <script src="/static/common/js/util/jquery.fn.extend.js"></script>
+    <!-- my97date -->
+    <script src="/static/common/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body class="hold-transition skin-blue-light sidebar-mini">
+<div style="padding-left: 100px;padding-top: 40px;">
+    <div style="padding: 5px 0px;">
+        <label>登录账号</label>
+        <input type="text" id="userCode" placeholder="请输入登录账号"/>
+    </div>
+    <div style="padding: 5px 0px;">
+        <label>原始密码</label>
+        <input type="password" id="oldPassword" placeholder="请输入旧密码"/>
+    </div>
+    <div style="padding: 5px 0px;">
+        <label>新密码</label>
+        <input style="margin-left: 14px;" type="password" id="newPassword" placeholder="请输入新密码"/>
+    </div>
+
+    <button id="pw_submit" type="button" class="change-button">提交</button>
+    <div style="padding: 5px 0px;color: orangered;font-family: cursive;">如果忘记密码请联系学校管理员！</div>
+</div>
+<style type="text/css">
+    .change-button {
+        width: 100px;
+        margin-left: 60px;
+        background-color: lightskyblue;
+        border: inset;
+        height: 30px;
+    }
+</style>
+<script type="text/javascript">
+    $('#pw_submit').click(function () {
+        var userCode = $('#userCode').val();
+        var oldPassword = $('#oldPassword').val();
+        var newPassword = $('#newPassword').val();
+        if (userCode === undefined || userCode.trim() === '') {
+            toastr.error("请填写登录账号");
+            return;
+        }
+        if (oldPassword === undefined || oldPassword.trim() === '') {
+            toastr.error("请填写旧密码");
+            return;
+        }
+        if (newPassword === undefined || newPassword.trim() === '') {
+            toastr.error("请填写新密码");
+            return;
+        }
+        var param = {
+            userCode: userCode,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        };
+        $.ajax({
+            type: "POST",
+            async: false,
+            dataType: "json",
+            url: "/user/login/savePW",
+            data: param,
+            success: function (res) {
+                if (res.code === 1) {
+                    bootbox.setLocale("zh_CN");
+                    bootbox.alert('<b>系统提示</b></br></br>修改成功！', function (b) {
+                        window.location.href = "/";
+                    });
+                } else {
+                    toastr.error(res.msg);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+#if($!exception)
+<div style="color:red">
+    $exception.printStackTrace()
+    Unexpect：  $!exception.message
+</div>
+#end

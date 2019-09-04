@@ -1,0 +1,132 @@
+#set($layoutPath="layout/empty.vm")
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>分析管理系统</title>
+    <style type="text/css">
+        #dlk {
+            width: 549px;
+            height: 100%;
+            position: relative;
+            top: 150px;
+            float: right;
+        }
+
+        #mm {
+            width: 100%;
+        }
+
+        #tp {
+            background-image: url(/static/common/img/manage.png);
+            height: 500px;
+            background-position: right center;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/common/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <script src="/static/common/js/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="/static/common/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <!-- tips -->
+    <script src="/static/common/js/toastr/toastr.min.js"></script>
+</head>
+<body>
+<br>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                            class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand">学生行为管理系统</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<br/><br/>
+<div id="tp">
+    <div id="dlk">
+        <div>
+            <span class="yhdl">登录</span>
+            <span class="yhdl" style="padding-left: 38px; padding-right: 38px;">|</span>
+            <span class="yhdl">LOGIN</span>
+        </div>
+        <br><br>
+        <div>
+            <input type="text" id="userCode" placeholder="用户名"/>
+        </div>
+        <br/>
+        <div>
+            <input type="password" id="password" placeholder="密码"/>
+        </div>
+        <br>
+        <div id="userRole" style="display: none">
+            <input type="radio" name="role" value="0" checked="checked">学生
+            <input type="radio" name="role" value="1">教师
+            <input type="radio" name="role" value="2">管理员
+        </div>
+        <div style="padding-left: 20px;">
+            <button onclick="loginPost()">登 录</button>
+            <a href="/user/login/changePW" style="padding-left: 30px;">更改密码</a>
+        </div>
+    </div>
+</div>
+<br/><br/>
+<div class="container" style="padding-top: 1%">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="background-color:#808080">
+            <p>
+            <center>
+                ©版权所有 学生行为管理系统服务中心 <br>
+            </center>
+            <center>
+                地址：上海市浦东新区橄榄路1350号35号楼1018室
+                邮编：201306 传真：021-38223800 联系电话：15001959005 邮箱：kingtaoge@126.com
+            </center>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $("#password").keypress(function (e) {
+        if (e.which == 13) {
+            loginPost();
+        }
+    });
+
+    function loginPost() {
+        var role = $('input[name="role"]:checked').val();
+        var param = {};
+        param.userCode = $("#userCode").val();
+        param.password = $("#password").val();
+        /*param.role = role;
+        if (role == undefined || role == '') {
+            alert("请选择登录角色");
+            return;
+        }*/
+        jQuery.ajax({
+            type: "POST",
+            url: "/user/login/loginPost",
+            data: param,
+            dataType: 'json',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (data) {
+                if (data.code == 1) {
+                    window.location.href = '/';
+                } else {
+                    window.alert(data.msg);
+                }
+            }
+        });
+    }
+</script>

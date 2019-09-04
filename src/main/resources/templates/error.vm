@@ -1,0 +1,9 @@
+<div id="content" class="w1200 mCenter">
+    <div id="system-error-layout">
+        <div id="system-error" class="mCenter">
+            <div class="system-error-text">
+                <p>$!{error}</p>
+            </div>
+        </div>
+    </div>
+</div>

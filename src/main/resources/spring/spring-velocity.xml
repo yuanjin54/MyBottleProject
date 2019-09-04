@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="configLocation">
+            <value>classpath:velocity.properties</value>
+        </property>
+        <property name="resourceLoaderPath" value="classpath:/templates"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- velocity 视图解析器 -->
+    <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="layoutUrl" value="layout/layout.vm"/>
+        <!--<property name="layoutKey" value="layoutPath"></property>-->
+        <property name="cache" value="false"/>
+        <property name="prefix" value="/templates/" /><!-- 视图文件的前缀，即存放的路径 -->
+        <property name="suffix" value=".vm"/>
+        <property name="dateToolAttribute" value="date"/>
+        <property name="numberToolAttribute" value="number"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="exposeSpringMacroHelpers" value="true" /><!--是否使用spring对宏定义的支持-->
+        <property name="exposeRequestAttributes" value="true" /><!--是否开放request属性-->
+        <property name="requestContextAttribute" value="rc"/><!--request属性引用名称-->
+        <property name="toolboxConfigLocation" value="config/toolbox.xml"/><!--toolbox配置文件路径-->
+    </bean>
+
+</beans>

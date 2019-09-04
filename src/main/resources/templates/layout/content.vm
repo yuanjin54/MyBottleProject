@@ -1,0 +1,4 @@
+<div class="main-content">
+    <iframe  id="mainFrame" scrolling="auto" frameborder="0"  src="#springUrl('')/welcome" style="width:100%;">
+    </iframe>
+</div>

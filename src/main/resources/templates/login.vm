@@ -1,0 +1,4 @@
+#set($layout="layout/contentLayout.vm")
+<div class="span12">
+    This is login
+</div>

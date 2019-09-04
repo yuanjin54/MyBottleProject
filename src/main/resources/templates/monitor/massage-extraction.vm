@@ -1,0 +1,182 @@
+#set($layout="layout/contentLayout.vm")
+<div style="padding: 0 5%;">
+    <input id="nowPage" type="hidden"/>
+    <input id="pageNum" type="hidden"/>
+    <textarea class="textarea" id="content_id" placeholder="请输入待抽取的文本内容..."></textarea>
+    <button id="submit" class="btn btn-bt-no" style="margin-bottom: 20px;
+    margin-left: 10px;color: white;" onclick="getMassageList()">提交
+    </button>
+    <div>
+        <ul style="padding-left: 0px" id="massageList">
+        </ul>
+    </div>
+    <div id="page"></div>
+</div>
+#parse("monitor/wait-model.vm")
+<style type="text/css">
+    .input-border-main {
+        height: 37px;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        border: double;
+        border-color: darkgreen;
+        width: 160px;
+    }
+
+    .clearfix {
+        display: block;
+        border-bottom: solid 1px #ddd;
+        margin-bottom: 10px;
+    }
+
+    .news-date {
+        text-align: center;
+        display: inline-block;
+        float: left;
+        width: 5rem;
+        height: 5rem;
+        background: #f2f2f2;
+    }
+
+    .news-date1 {
+        text-align: center;
+        color: #666666;
+        font-size: 1.5625rem;
+        padding-top: 30%;
+    }
+
+    .news-bodys {
+        display: list-item;
+        padding: 0 0.875rem;
+        overflow: hidden;
+    }
+
+    .username {
+        font-size: 27px;
+        margin-right: 10px;
+        color: blue;
+    }
+
+    .verb {
+        font-size: 18px;
+        color: brown;
+    }
+
+    .centence {
+        text-indent: 2em;
+        text-align: justify;
+        font-size: 16px;
+        color: #999;
+    }
+
+    #page {
+        margin: 20px auto;
+        color: #666;
+        display: block;
+        text-align: center;
+    }
+
+    #page ul {
+        padding-left: 0px;
+    }
+
+    #page li {
+        display: inline-block;
+        min-width: 30px;
+        height: 28px;
+        cursor: pointer;
+        color: #666;
+        font-size: 13px;
+        line-height: 28px;
+        background-color: #f9f9f9;
+        border: 1px solid #dce0e0;
+        text-align: center;
+        margin: 0 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .xl-nextPage,
+    .xl-prevPage {
+        width: 60px;
+        color: #0073A9;
+        height: 28px;
+    }
+
+    #page li.xl-disabled {
+        opacity: .5;
+        cursor: no-drop;
+    }
+
+    #page li.xl-active {
+        background-color: #0073A9;
+        border-color: #0073A9;
+        color: #FFF
+    }
+
+    .textarea {
+        margin: 10px;
+        padding: 8px;
+        width: 100%;
+        height: 200px;
+        border: solid 2px #ddd;
+        border-radius: 8px;
+        background: snow;
+        font-size: 17px;
+    }
+    .btn-bt{
+        background: silver;
+        pointer-events: none;
+    }
+    .btn-bt-no{
+        background: royalblue;
+    }
+</style>
+<script>
+    function getMassageList() {
+        var param = [];
+        var content = $("#content_id").val();
+        $("#submit").attr("disabled","disabled");
+        $("#submit").removeClass("btn-bt-no");
+        $("#submit").addClass("btn-bt");
+        $("#loadingModal").modal('show');
+        $.ajax({
+            type: "POST",
+            async: false,
+            dataType: "json",
+            url: basePath + "/monitor/extract-list?_time=" + new Date().getTime(),
+            data: 'content=' + content,
+            success: function (res) {
+                $('#loadingModal').modal('hide');
+                if (res.code == 1) {
+                    var content = showMassageList(res.data);
+                    console.log(res.code)
+                    $('#massageList').html(content);//显示详情页面
+                }else {
+                    bootbox.alert(res.msg);
+                }
+                $("#submit").removeAttr("disabled");
+                $("#submit").removeClass("btn-bt");
+                $("#submit").addClass("btn-bt-no");
+            }
+        });
+    }
+
+    function showMassageList(data) {
+        var html = '';
+        var res = data;
+        for (var i = 0; i < data.length; i++) {
+            html += '<li class="clearfix">' +
+                    '<div class="news-date">' +
+                    '<div class="news-date1">' + res[i].id + '</div>' +
+                    '</div>' +
+                    '<div class="news-bodys">' +
+                    '<a class="username">' + res[i].speaker + '</a>' +
+                    '<a class="verb">' + res[i].verb + '</a>' +
+                    '<p class="centence">' + res[i].content + '</p></div></li>'
+        }
+        return html;
+    }
+</script>
