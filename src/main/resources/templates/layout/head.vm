@@ -9,7 +9,7 @@
             <a class="a_but" onclick="selectUrl(this,'/welcome')">首页</a>
             <a class="a_but" onclick="selectUrl(this,'/monitor/extraction')">言论提取</a>
             <a class="a_but" onclick="selectUrl(this,'/monitor/index')">言论列表</a>
-            <a class="a_but" onclick="selectUrl(this,'/monitor/abstract')">自动摘要提取</a>
+            <a class="a_but" onclick="selectUrl(this,'/monitor/abstract')">自动摘要生成</a>
             <a class="a_but" onclick="selectUrl(this,'/monitor/abstract-index')">摘要列表</a>
         </p>
         <p class="p2">
