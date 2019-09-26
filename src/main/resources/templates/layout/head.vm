@@ -1,4 +1,5 @@
-<div class="container-fluid" style="padding-left: 0px;padding-right: 0px;height: 120px;margin-bottom: 3px;background: antiquewhite;">
+<div class="container-fluid"
+     style="padding-left: 0px;padding-right: 0px;height: 120px;margin-bottom: 3px;background: antiquewhite;">
     <div class="span12" style="margin-bottom: 14px;">
         <h3 style="font-size: 30px;margin-left: 38px;">
             ASE平台
@@ -12,10 +13,6 @@
             <a class="a_but" onclick="selectUrl(this,'/monitor/abstract')">自动摘要生成</a>
             <a class="a_but" onclick="selectUrl(this,'/monitor/abstract-index')">摘要列表</a>
         </p>
-        <p class="p2">
-            <a class="a_but" onclick="selectUrl(this,'/user/login')">登录</a><span style="color: white">|</span>
-            <a class="a_but" href="/user/register">注册</a>
-        </p>
     </div>
 </div>
 <style type="text/css">
@@ -25,14 +22,14 @@
         height: 55px;
     }
 
-    .p1{
+    .p1 {
         float: left;
         font-size: 16px;
         padding-top: 17px;
         padding-left: 4%;
     }
 
-    .p2{
+    .p2 {
         float: right;
         font-size: 16px;
         padding-top: 17px;
@@ -46,24 +43,27 @@
     .selected_class {
         background: white;
     }
-    .a_but{
-        cursor:pointer;
+
+    .a_but {
+        cursor: pointer;
         color: white;
-        padding: 8px 10px;
+        padding: 8px 2px;
     }
-    a.a_but:hover,a.a_but:active {
+
+    a.a_but:hover, a.a_but:active {
         background: yellow;
         color: black;
     }
-    .but_cls{
+
+    .but_cls {
         background: yellow;
         color: black;
     }
 </style>
 
 <script>
-    $(function(){
-        $(".n_li").find(".a_but").click(function(e){
+    $(function () {
+        $(".n_li").find(".a_but").click(function (e) {
             $(".a_but").removeClass("but_cls");
             $(this).addClass("but_cls");
         });
