@@ -27,7 +27,7 @@
     </select>
 
     <select id="insert" parameterType="com.ar.ase.entity.SpeechMessage">
-        INSERT INTO speech_message(speaker, content, verb) values(#{speaker,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{verb,jdbcType=VARCHAR});
+        INSERT INTO speech_message(speaker, content, verb, ip_address, create_time) values(#{speaker,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{verb,jdbcType=VARCHAR},#{ipAddress,jdbcType=VARCHAR},#{createTime});
     </select>
 
 </mapper>

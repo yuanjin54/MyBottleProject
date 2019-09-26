@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ar.ase.mapper.TextAbstractMapper">
+    <!-- 根据条件查询 -->
+    <select id="getMessageByCondition" resultType="com.ar.ase.entity.TextAbstract"
+            parameterType="com.ar.ase.entity.TextAbstract">
+        select id, source_text AS sourceText, abstract_text AS abstractText, ip_address AS ipAddress, create_time AS createTime, yn from text_abstract
+        <where>
+            yn=1
+            <if test="id != null">
+                <![CDATA[AND id = #{id,jdbcType=INTEGER}]]>
+            </if>
+            <if test="sourceText != null and sourceText != ''">
+                <![CDATA[AND source_text like concat('%', #{sourceText,jdbcType=VARCHAR},'%')]]>
+            </if>
+            <if test="abstractText != null and abstractText != ''">
+                <![CDATA[AND abstract_text like concat('%', #{abstractText,jdbcType=VARCHAR},'%')]]>
+            </if>
+            order by id
+        </where>
+    </select>
+
+    <select id="insert" parameterType="com.ar.ase.entity.TextAbstract">
+        INSERT INTO text_abstract(source_text, abstract_text, ip_address, create_time) values(#{sourceText,jdbcType=VARCHAR},#{abstractText,jdbcType=VARCHAR},#{ipAddress,jdbcType=VARCHAR},#{createTime});
+    </select>
+
+</mapper>

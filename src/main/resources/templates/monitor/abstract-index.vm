@@ -119,7 +119,7 @@
     }
 </style>
 <script src="/static/common/js/page/xlPaging.js"></script>
-<script src="/static/monitor/massage-list.js"></script>
+<script src="/static/monitor/abstract-list.js"></script>
 <script>
     var param = {};
     param.page = 1;

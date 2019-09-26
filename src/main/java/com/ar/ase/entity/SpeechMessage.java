@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * SpeechMessage
@@ -24,5 +25,7 @@ public class SpeechMessage implements Serializable {
     private String verb;
     private String content;
     private String keyword;
+    private String ipAddress;
+    private Date createTime;
     private Integer yn;
 }
