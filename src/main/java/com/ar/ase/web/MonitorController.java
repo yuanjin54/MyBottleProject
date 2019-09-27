@@ -1,5 +1,6 @@
 package com.ar.ase.web;
 
+import com.alibaba.fastjson.JSON;
 import com.ar.ase.common.Page;
 import com.ar.ase.common.Result;
 import com.ar.ase.common.util.HttpUtil;
@@ -137,10 +138,10 @@ public class MonitorController {
     @ResponseBody
     public Result abstractList(HttpServletRequest request, HttpServletResponse response, String content) {
         Result result = new Result(1, "success");
-//        String url = "http://39.100.3.165:8868/list";
-        String url = "http://localhost:8868/list";
+        String url = "http://39.100.3.165:8868/abstract";
+//        String url = "http://localhost:8868/abstract";
         System.out.println(request.getParameter("content"));
-        String param = "username=" + content;
+        String param = "text_content=" + content;
         System.out.println(content);
         String ipAddress = IPUtils.getIpAddr(request);
         if (StringUtils.isBlank(content)) {
@@ -151,9 +152,10 @@ public class MonitorController {
         try {
             String responseStr = HttpUtil.sendPost(url, param);
             System.out.println(responseStr);
+            Result result1 = JSON.parseObject(responseStr, Result.class);
             TextAbstract textAbstract = TextAbstract.builder()
-                    .sourceText("原文")
-                    .abstractText("摘要")
+                    .sourceText(content)
+                    .abstractText(StringUtils.convertToStr(result1.getData()))
                     .ipAddress(ipAddress)
                     .createTime(new Date())
                     .build();
