@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from bottle import get, post, request, route, run, template, static_file
-from speakingExtraction import ExtractionModel
-
 import sys
 import os
 import warnings
 
 warnings.filterwarnings("ignore")
 
-root_path = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(root_path)
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+sys.path.append(rootPath)
+
+# 在导入自定义模块之前，一定要先把待加入的模块设置在rootPath下才行
+from speakingExtraction import ExtractionModel
 
 
 @get('/')

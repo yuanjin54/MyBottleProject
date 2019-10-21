@@ -115,4 +115,4 @@ if __name__ == '__main__':
     model = SpeakingExtractionModel()
     result = model.extract(text)
     for ele in result:
-        print(' '.join(ele))
+        print(' '.join(str(ele)))
