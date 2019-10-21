@@ -6,7 +6,7 @@ import joblib
 import os
 
 
-class MessageExtraction:
+class SpeakingExtractionModel:
     KEYS = ['HED', 'COO', 'VOB']
 
     def __init__(self):
@@ -89,7 +89,7 @@ class MessageExtraction:
             speaker = self.selectSpeaker(ltp.tagging, arcs, ltp.words)
             message = self.selectMessage(arcs, ltp.words)
             if verb is not None:
-                result.append([speaker, verb, message])
+                result.append([len(result) + 1, speaker, verb, message])
             # print("抽取结果：{}  {}  {}".format(speaker, verb, message))
         return result
 
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     “2022年是中国最重要的一年，国家致力于发展人工智能产业，将实现人民生活的智能化”，国家主席习近平在全国人大会议上明确指出。
     """
     # text = '台湾政府声称要与大陆实现完全统一。'
-    model = MessageExtraction()
+    model = SpeakingExtractionModel()
     result = model.extract(text)
     for ele in result:
         print(' '.join(ele))
