@@ -42,7 +42,7 @@ def speakingExtraction():
             text = text.strip()
             if text != 'test':
                 model = ExtractionModel.SpeakingExtractionModel()
-                data = model.extract()
+                data = model.extract(text)
             if len(data) < 1:
                 result["data"] = None
                 result["code"] = 2
@@ -69,4 +69,4 @@ def getAbstract():
     return None
 
 
-run(host="0.0.0.0", port=8868, server="tornado")
+run(host="0.0.0.0", port=8668, server="tornado")

@@ -4,6 +4,7 @@ from speakingExtraction.MyPyLtp import MyPyLtp
 
 import joblib
 import os
+import re
 
 
 class SpeakingExtractionModel:
@@ -11,7 +12,13 @@ class SpeakingExtractionModel:
 
     def __init__(self):
         self.root_path = os.path.dirname(os.path.abspath(__file__))
-        self.keywords = joblib.load(self.root_path + '/keyword_similar.pkl')
+        self.keywords_path = self.root_path + '/keywords.txt'
+        # self.keywords = joblib.load(self.root_path + '/keyword_similar.pkl')
+        self.read_keywords()
+
+    def read_keywords(self):
+        with open(self.keywords_path, 'r', encoding='utf-8') as f:
+            self.keywords = [''.join(re.findall(r'\w+', ele)) for ele in f.readlines()]
 
     def selectVerbIdx(self, arcs, words):
         self.verbIdx = -1
@@ -23,7 +30,7 @@ class SpeakingExtractionModel:
         if len(keywordIdx) > 0:
             # 找出与“说”是最相似的词的索引
             for id in keywordIdx:
-                if self.keywords[words[id]] > 2:
+                if words[id] in self.keywords:
                     self.verbIdx = id
                     break
 
@@ -83,8 +90,8 @@ class SpeakingExtractionModel:
             if len(sent.strip()) == 0:
                 continue
             arcs = ltp.relation_analysis(sent)
-            # print("分词结果：%s" % (ltp.words))
-            # print("\t".join("%d:%s" % (arc[0], arc[1]) for arc in arcs))
+            print("分词结果：%s" % (ltp.words))
+            print("\t".join("%d:%s" % (arc[0], arc[1]) for arc in arcs))
             verb = self.selectVerb(arcs, ltp.words)
             speaker = self.selectSpeaker(ltp.tagging, arcs, ltp.words)
             message = self.selectMessage(arcs, ltp.words)
@@ -102,17 +109,24 @@ class SpeakingExtractionModel:
 if __name__ == '__main__':
     # text = "昨天是小强的生日，我们应该给他买个礼物，张晓玲在会上说。"
     text = """
-    台湾工业总会是岛内最具影响力的工商团体之一，2008年以来，该团体连续12年发表对台当局政策的建言白皮书，集中反映岛内产业界的呼声。\
-    台湾工业总会指出，2015年的白皮书就特别提到台湾面临“五缺”（缺水、缺电、缺工、缺地、缺人才）困境，使台湾整体投资环境走向崩坏。\
-    然而四年过去，“五缺”未见改善，反而劳动法规日益僵化、两岸关系陷入紧张、对外关系更加孤立。该团体质疑，台当局面对每年的建言，\
-    “到底听进去多少，又真正改善了几多”？围绕当局两岸政策，工总认为，由数据来看，当前大陆不仅是台湾第一大出口市场，亦是第一大进口来源及首位对外投资地，\
-    建议台湾当局摒弃两岸对抗思维，在“求同存异”的现实基础上，以“合作”取代“对立”，为台湾多数民众谋福创利。\
-    工总现任理事长、同时也是台塑企业总裁的王文渊指出，过去几年，两岸关系紧张，不仅影响岛内观光、零售、饭店业及农渔蔬果产品的出口，\
-    也使得岛内外企业对投资台湾却步，2020年新任台湾领导人出炉后，应审慎思考两岸问题以及中国大陆市场。\
-    “2022年是中国最重要的一年，国家致力于发展人工智能产业，将实现人民生活的智能化”，国家主席习近平在全国人大会议上明确指出。
-    """
+    习近平强调，创新是乡村全面振兴的重要支撑。要坚持把科技特派员制度作为科技创新人才服务乡村振兴的重要工作进一步抓实抓好。广大科技特派员要秉持初心，在科技助力脱贫攻坚和乡村振兴中不断作出新的更大的贡献。
+
+　　科技特派员制度推行20周年总结会议21日在北京召开，会上传达了习近平的重要指示。
+
+　　中共中央政治局委员、国务院副总理刘鹤出席会议并讲话。他表示，习近平总书记的重要指示是新时代深入推进科技特派员制度的根本遵循和行动指南。20年来，科技特派员制度坚持以服务“三农”为出发点和落脚点、以科技人才为主体、以科技成果为纽带，在推动乡村振兴发展、助力打赢脱贫攻坚战中取得显著成效。新时代深入实施科技特派员制度，要紧紧围绕创新驱动发展、乡村振兴和脱贫攻坚，进一步完善制度体系和政策环境，进一步发展壮大科技特派员队伍，把创新的动能扩散到田间地头。
+
+　　会议对92名科技特派员和43家组织实施单位进行了通报表扬。浙江省、福建省南平市、江西省井冈山市和科技特派员代表在会上作交流发言。
+
+　　有关部门负责同志，各省区市和计划单列市、新疆生产建设兵团有关负责同志，部分通报表扬的科技特派员和组织实施单位代表等参加会议。    """
     # text = '台湾政府声称要与大陆实现完全统一。'
     model = SpeakingExtractionModel()
     result = model.extract(text)
-    for ele in result:
-        print(' '.join(str(ele)))
+    model.read_keywords()
+    print(model.keywords)
+
+    # with open('keywords.txt', 'w') as f:
+    #     for k, v in model.keywords.items():
+    #         f.write(k+'\n')
+
+    # for ele in result:
+    #     print(' '.join(str(ele)))

@@ -9,7 +9,10 @@ warnings.filterwarnings("ignore")
 
 
 class MyPyLtp:
+    # 本地配置ltp model路径
     LTP_DATA_DIR = '/Users/yuanjin/PycharmProjects/ltp_data_v3.4.0'  # ltp模型目录的路径
+    # linux配置ltp model路径
+    # LTP_DATA_DIR = '/home/student/project/project-01/ltp_data'
     pos_model_path = os.path.join(LTP_DATA_DIR, 'pos.model')  # 词性标注模型路径，模型名称为`pos.model`
     cws_model_path = os.path.join(LTP_DATA_DIR, 'cws.model')
     special_word_path = os.path.join(LTP_DATA_DIR, 'special_word.txt')
