@@ -25,7 +25,6 @@ def speakingExtraction():
     requestion = request.POST.decode('utf-8')
     data = []
     result = {}
-    # print(username)
     example1 = [1, "习近平", "指出", "既要决胜全面建成小康社会，又要开启全面建设社会主义现代化国家新征程"]
     data.append(example1)
     example2 = [2, "奥巴马", "提出", "两项不受布什现有教育政策框架限制,也不以特定利益团体为优惠对象的教育主张,即对学前教育提出“0岁至5岁教育计划”"]

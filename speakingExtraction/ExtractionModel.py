@@ -13,8 +13,7 @@ class SpeakingExtractionModel:
     def __init__(self):
         self.root_path = os.path.dirname(os.path.abspath(__file__))
         self.keywords_path = self.root_path + '/keywords.txt'
-        # self.keywords = joblib.load(self.root_path + '/keyword_similar.pkl')
-        self.read_keywords()
+        self.keywords = joblib.load(self.root_path + '/keyword_similar.pkl')
 
     def read_keywords(self):
         with open(self.keywords_path, 'r', encoding='utf-8') as f:
@@ -30,7 +29,7 @@ class SpeakingExtractionModel:
         if len(keywordIdx) > 0:
             # 找出与“说”是最相似的词的索引
             for id in keywordIdx:
-                if words[id] in self.keywords:
+                if self.keywords[words[id]] > 5:
                     self.verbIdx = id
                     break
 
@@ -53,7 +52,7 @@ class SpeakingExtractionModel:
         self.selectSpeakerIdx(arcs)
         if self.speakerIdx >= 0:
             idx = self.speakerIdx - 1
-            if idx >= 0 and tagging[idx] == 'ns':  # 台湾 政府 表示... => 台湾政府 表示 ...
+            if idx >= 0 and tagging[idx] in ['ns', 'nh']:  # 台湾 政府 表示... => 台湾政府 表示 ...
                 return ''.join(words[idx:self.speakerIdx + 1])
 
             return words[self.speakerIdx]
@@ -91,6 +90,7 @@ class SpeakingExtractionModel:
                 continue
             arcs = ltp.relation_analysis(sent)
             print("分词结果：%s" % (ltp.words))
+            print(list(ltp.tagging))
             print("\t".join("%d:%s" % (arc[0], arc[1]) for arc in arcs))
             verb = self.selectVerb(arcs, ltp.words)
             speaker = self.selectSpeaker(ltp.tagging, arcs, ltp.words)
@@ -122,11 +122,10 @@ if __name__ == '__main__':
     model = SpeakingExtractionModel()
     result = model.extract(text)
     model.read_keywords()
-    print(model.keywords)
 
     # with open('keywords.txt', 'w') as f:
     #     for k, v in model.keywords.items():
     #         f.write(k+'\n')
 
-    # for ele in result:
-    #     print(' '.join(str(ele)))
+    for ele in result:
+        print(' '.join(str(ele)))
