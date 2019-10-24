@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from speakingExtraction.CommonUtils import sentence_split
-from speakingExtraction.MyPyLtp import MyPyLtp
+from commonUtils.CommonUtils import sentence_split
+from commonUtils.MyPyLtp import MyPyLtp
 
 import joblib
 import os
