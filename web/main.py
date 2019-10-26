@@ -11,7 +11,8 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 # 在导入自定义模块之前，一定要先把待加入的模块设置在rootPath下才行
-from speakingExtraction import ExtractionModel
+from speakingExtraction import SpeakingExtractionModel
+from abstractExtraction import AbstractExtractionModel
 
 
 @get('/')
@@ -40,7 +41,7 @@ def speakingExtraction():
         if text is not None and text.strip() != '':
             text = text.strip()
             if text != 'test':
-                model = ExtractionModel.SpeakingExtractionModel()
+                model = SpeakingExtractionModel.SpeakingExtractionModel()
                 data = model.extract(text)
             if len(data) < 1:
                 result["data"] = None
@@ -63,9 +64,33 @@ def speakingExtraction():
 
 
 # 自动摘要提取
-@post('/abstract')
+@post('/abstract-extraction')
 def getAbstract():
-    return None
+    result = {}
+    requestion = request.POST.decode('utf-8')
+    try:
+        # 获取文本内容
+        text = requestion.get('text')
+        if text is not None and text.strip() != '':
+            text = text.strip()
+            if text == 'test':
+                result["data"] = '模型服务运行正常，success'
+            else:
+                model = AbstractExtractionModel.AbstractExtractionModel()
+                result["data"] = model.simple_extract(text)
+            result["code"] = 1
+            result["msg"] = 'success'
+        else:
+            result["data"] = None
+            result["code"] = 2
+            result["msg"] = 'The result is null!'
+        return result
+    except Exception as e:
+        result["data"] = None
+        result["code"] = 0
+        result["msg"] = 'The model exception, {}'.format(e)
+        print('exception:', e)
+    return result
 
 
 run(host="0.0.0.0", port=8668, server="tornado")
