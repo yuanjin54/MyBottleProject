@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from bottle import get, post, request, route, run, template, static_file
+from chatbot.chatbot import ChatBot
 import sys
+import re
 import os
 import warnings
 
@@ -9,6 +11,10 @@ warnings.filterwarnings("ignore")
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
+
+zhPattern = re.compile(u'[\u4e00-\u9fa5]+')
+ct_bot = ChatBot()
+print('chatbot initialization finished...')
 
 # 在导入自定义模块之前，一定要先把待加入的模块设置在rootPath下才行
 from speakingExtraction import SpeakingExtractionModel
@@ -55,6 +61,40 @@ def speakingExtraction():
             result["data"] = None
             result["code"] = 2
             result["msg"] = 'The result is null!'
+    except Exception as e:
+        result["data"] = None
+        result["code"] = 0
+        result["msg"] = 'The model exception, {}'.format(e)
+        print('exception:', e)
+    return result
+
+
+# 机器人对话
+@post('/robot')
+def reply():
+    result = {}
+    requestion = request.POST.decode('utf-8')
+    try:
+        # 获取文本内容
+        text = requestion.get('text')
+        if text is not None and text.strip() != '':
+            text = text.strip()
+            if text == 'test':
+                result["data"] = '模型服务运行正常，success'
+            else:
+                print(text)
+                if len(text) == 0:
+                    answer = text
+                else:
+                    answer = ct_bot.answer(text).strip()
+                result["data"] = answer
+            result["code"] = 1
+            result["msg"] = 'success'
+        else:
+            result["data"] = None
+            result["code"] = 2
+            result["msg"] = 'The result is null!'
+        return result
     except Exception as e:
         result["data"] = None
         result["code"] = 0
