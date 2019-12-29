@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
-from chatbot.match import Retrieve, SemanticMatch
-from chatbot.config import config
+from robot.chatbot.match import Retrieve, SemanticMatch
+from robot.chatbot.config import config
 import jieba
-from chatbot.zhidao_spider import Spider
+from robot.chatbot.zhidao_spider import Spider
 
 
 class ChatBot(object):

@@ -1,13 +1,8 @@
 # !/usr/bin/env Python
 # coding=utf-8
 
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request
 from flask import jsonify
-
-import sys
-import time
-import hashlib
-import threading
 
 # def heartbeat():
 #     print (time.strftime('%Y-%m-%d %H:%M:%S - heartbeat', time.localtime(time.time())))
@@ -22,7 +17,7 @@ import threading
 #     import xml.etree.ElementTree as ET
 
 import re
-from chatbot.chatbot import ChatBot
+from robot.chatbot.chatbot import ChatBot
 
 zhPattern = re.compile(u'[\u4e00-\u9fa5]+')
 ct_bot = ChatBot()

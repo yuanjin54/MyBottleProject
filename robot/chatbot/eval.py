@@ -1,6 +1,6 @@
 # coding=utf-8
 import pandas as pd
-from chatbot.config import config
+from robot.chatbot.config import config
 from chatbot import ChatBot
 
 

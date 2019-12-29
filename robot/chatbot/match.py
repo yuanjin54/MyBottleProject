@@ -7,8 +7,8 @@ import jieba
 import re
 from collections import Counter
 from spherecluster import SphericalKMeans
-from chatbot.embedding import Embedding
-from chatbot.utils import write_json
+from robot.chatbot.embedding import Embedding
+from robot.chatbot.utils import write_json
 from typing import List, Tuple
 from bert_serving.client import BertClient
 
