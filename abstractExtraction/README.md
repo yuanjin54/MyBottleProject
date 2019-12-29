@@ -19,7 +19,7 @@
 ### 5、主要技术
     TextRank、Sentence Embedding、LDA、PyLtp
 
-### 4、算法实现步骤
+### 6、算法实现步骤
 - 利用维基百科语料构建word2vec词向量模型
 - 依据普林斯顿2017年的sentence embedding方法，构建句子embedding，并计算句子间相似度
 - 利用TextRank进行关键词提取，并更新对应句子的权值
@@ -27,6 +27,8 @@
 - 再使用knn进行平滑处理
 - 筛选出相似度topN的句子
 - 利用哈工大的Pyltp工具去除无关的修饰词
+
+### 7、模型评估
 
 
 
