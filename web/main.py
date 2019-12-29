@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bottle import get, post, request, route, run, template, static_file
+from bottle import get, post, request, run, template
 import sys
 import re
 import os
@@ -14,7 +14,7 @@ sys.path.append(rootPath)
 # 在导入自定义模块之前，一定要先把待加入的模块设置在rootPath下才行
 from speakingExtraction import SpeakingExtractionModel
 from abstractExtraction import AbstractExtractionModel
-from chatbot.chatbot import ChatBot
+from robot.chatbot.chatbot import ChatBot
 
 zhPattern = re.compile(u'[\u4e00-\u9fa5]+')
 ct_bot = ChatBot()

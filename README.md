@@ -1,13 +1,17 @@
-# MyProject
+# MyBottleProject
+    web主页：http://ase.yuanjin.fun
 
-## project1: auto_speech_extraction
+## speakingExtraction
 - 自动化言论提取
 
-## project2: auto_abstrate_generate
-- 自动化摘要生成
+## abstractExtraction
+- 自动化摘要抽取
 
-## project3: text_multi_classification
+## project3: multiTextClassifier
 - 文本多分类器
 
-## project4: robot_conversation
+## robot
 - 机器人对话
+
+## commonUtils
+- 各任务处理所需的公共工具类
