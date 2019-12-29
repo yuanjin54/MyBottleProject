@@ -58,6 +58,7 @@ class MyPyLtp:
         arcs = self.parser.parse(self.words, self.tagging)  # 句法分析
         return [[arc.head, arc.relation] for arc in arcs]
 
+
 if __name__ == '__main__':
     sentence = '''台湾工业总会指出，2015年的白皮书就特别提到台湾面临“五缺”（缺水、缺电、缺工、缺地、缺人才）困境，使台湾整体投资环境走向崩坏。然而四年过去，“五缺”未见改善，反而劳动法规日益僵化、两岸关系陷入紧张、对外关系更加孤立。该团体质疑，台当局面对每年的建言，“到底听进去多少，又真正改善了几多”？ '''
     # sentence = '''国家主席中央军委主席袁进表示青少年应该好好学习天天下降！'''
