@@ -1,93 +1,95 @@
-# Bert-Chinese-Text-Classification-Pytorch
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+## multiTextClassifier
 
-中文文本分类，Bert，ERNIE，基于pytorch，开箱即用。
+### 1、项目介绍
+在自然语言处理中，有一个常见的问题就是对客户的评价进行分析。 这些用户评论中，包含了大量的有用信息，例如情感分析，或者相关事实描述。 例如:
+“味道不错的面馆，性价比也相当之高，分量很足～女生吃小份，胃口小的，可能吃不完呢。环境在面馆来说算是好的，至少看上去堂子很亮，也比较干净，一般苍蝇馆子还是比不上这个卫生状况的。中午饭点的时候，人很多，人行道上也是要坐满的，隔壁的冒菜馆子，据说是一家，有时候也会开放出来坐吃面的人。“
+首先情感是正向的，除此之外我们还能够进行知道这个的几个事实描述：1. 性价比比较高； 2. 装修比较好； 3. 分量足。
 
-## 介绍
-模型介绍、数据流动过程：还没写完，写好之后再贴博客地址。  
-机器：一块2080Ti ， 训练时间：30分钟。  
+- 位置: location
+    交通是否便利(traffic convenience)
+    距离商圈远近(distance from business district)
+    是否容易寻找(easy to find)
+- 服务(service)
+    排队等候时间(wait time)
+    服务人员态度(waiter’s attitude)
+    是否容易停车(parking convenience)
+    点菜/上菜速度(serving speed)
+- 价格(price)
+    价格水平(price level)
+    性价比(cost-effective)
+    折扣力度(discount)
+- 环境(environment)
+    装修情况(decoration)
+    嘈杂情况(noise)
+    就餐空间(space)
+    卫生情况(cleaness)
+- 菜品(dish)
+    分量(portion)
+    口感(taste)
+    外观(look)
+    推荐程度(recommendation)
+- 其他(others)
+    本次消费感受(overall experience)
+    再次消费的意愿(willing to consume again)
+    
+而为了方便训练数据的标标注，训练数据中，<** 正面情感, 中性情感, 负面情感, 情感倾向未提及 > ** 分别对应与 (1, 0, -1, -2).
 
-## 环境
-python 3.7  
-pytorch 1.1  
-tqdm  
-sklearn  
-tensorboardX  
-~~pytorch_pretrained_bert~~(预训练代码也上传了, 不需要这个库了)  
+例如说，“味道不错的面馆，性价比也相当之高，分量很足～女生吃小份，胃口小的，可能吃不完呢。环境在面馆来说算是好的，至少看上去堂子很亮，也比较干净，一般苍蝇馆子还是比不上这个卫生状况的。中午饭点的时候，人很多，人行道上也是要坐满的，隔壁的冒菜馆子，据说是一家，有时候也会开放出来坐吃面的人。“
+[交通是否便利(traffic convenience) -2
 
+距离商圈远近(distance from business district) -2
 
-## 中文数据集
-我从[THUCNews](http://thuctc.thunlp.org/)中抽取了20万条新闻标题，已上传至github，文本长度在20到30之间。一共10个类别，每类2万条。数据以字为单位输入模型。
+是否容易寻找(easy to find) -2
 
-类别：财经、房产、股票、教育、科技、社会、时政、体育、游戏、娱乐。
+排队等候时间(wait time) -2
 
-数据集划分：
+服务人员态度(waiter’s attitude) -2
 
-数据集|数据量
---|--
-训练集|18万
-验证集|1万
-测试集|1万
+是否容易停车(parking convenience) -2
 
+点菜/上菜速度(serving speed) -2
 
-### 更换自己的数据集
- - 按照我数据集的格式来格式化你的中文数据集。  
+价格水平(price level) -2
 
+性价比(cost-effective) 1
 
-## 效果
+折扣力度(discount) -2
 
-模型|acc|备注
---|--|--
-bert|94.83%|单纯的bert
-ERNIE|94.61%|说好的中文碾压bert呢  
-bert_CNN|94.44%|bert + CNN  
-bert_RNN|94.57%|bert + RNN  
-bert_RCNN|94.51%|bert + RCNN  
-bert_DPCNN|94.47%|bert + DPCNN  
+装修情况(decoration) 1
 
-原始的bert效果就很好了，把bert当作embedding层送入其它模型，效果反而降了，之后会尝试长文本的效果对比。
+嘈杂情况(noise) -2
 
-CNN、RNN、DPCNN、RCNN、RNN+Attention、FastText等模型效果，请见我另外一个[仓库](https://github.com/649453932/Chinese-Text-Classification-Pytorch)。  
+就餐空间(space) -2
 
-## 预训练语言模型
-bert模型放在 bert_pretain目录下，ERNIE模型放在ERNIE_pretrain目录下，每个目录下都是三个文件：
- - pytorch_model.bin  
- - bert_config.json  
- - vocab.txt  
+卫生情况(cleaness) 1
 
-预训练模型下载地址：  
-bert_Chinese: 模型 https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-chinese.tar.gz  
-              词表 https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-chinese-vocab.txt  
-来自[这里](https://github.com/huggingface/pytorch-transformers) 
+分量(portion) 1
+
+口感(taste) 1
+
+外观(look) -2
+
+推荐程度(recommendation) -2
+
+次消费感受(overall experience) 1
+
+再次消费的意愿(willing to consume again) -2
+]
+
+本次项目用到的环境为：
+Python3.6， Pycharm, Jupyter Notebook
+Keras， Tensorflow, Pandas
+Linux Ubuntu 服务器
   
-ERNIE_Chinese: http://image.nghuyong.top/ERNIE.zip  来自[这里](https://github.com/nghuyong/ERNIE-Pytorch)  
-解压后，按照上面说的放在对应目录下，文件名称确认无误即可。  
 
-## 使用说明
-下载好预训练模型就可以跑了。
-```
-# 训练并测试：
-# bert
-python run.py --model bert
+### 2、主要技术
+    
 
-# bert + 其它
-python run.py --model bert_CNN
-
-# ERNIE
-python run.py --model ERNIE
-```
-
-### 参数
-模型都在models目录下，超参定义和模型定义在同一文件中。  
-
-## 未完待续
- - bert + CNN, RNN, RCNN, DPCNN等  
- - ERNIE + CNN, RNN, RCNN, DPCNN等  
- - XLNET  
- - 另外想加个label smoothing试试效果  
- - 封装预测功能
+### 3、算法实现步骤
 
 
-## 对应论文
-[1] BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding  
-[2] ERNIE: Enhanced Representation through Knowledge Integration  
+### 4、模型评估
+
+
+
+
